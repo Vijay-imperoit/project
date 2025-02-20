@@ -18,7 +18,8 @@ const RemoteVideo = ({ stream, userId }) => {
   return (
     <div className="relative aspect-video">
       <video
-        ref={videoRef}
+        // ref={videoRef}
+        id="remoteVideo"
         autoPlay
         playsInline
         className="w-full h-full object-cover rounded-lg bg-gray-800"

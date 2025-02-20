@@ -266,7 +266,15 @@ class WebRTCService {
       }
       if (event.streams && event.streams[0]) {
         console.log('Adding remote stream for user:', targetUserId);
-        // document.getElementById('remoteVideo').srcObject = event.streams[0];
+        const remoteVideo = document.getElementById(
+          'remoteVideo'
+        ) as HTMLVideoElement | null;
+
+        if (remoteVideo) {
+          remoteVideo.srcObject = event.streams[0];
+        } else {
+          console.error('❌ remoteVideo element not found!');
+        }
         useCallStore.getState().addRemoteStream(targetUserId, event.streams[0]);
       }
     };
