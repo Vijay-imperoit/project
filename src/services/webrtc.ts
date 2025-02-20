@@ -54,7 +54,7 @@ class WebRTCService {
     // const port = '4000';
     // const serverUrl = `${protocol}//${host}:${port}`;
     // const serverUrl = `http://localhost:4000`;
-    const serverUrl = `https://f16d-122-179-140-29.ngrok-free.app`;
+    const serverUrl = `https://96a4-122-179-140-29.ngrok-free.app`;
     console.log('serverUrl', serverUrl);
 
     this.socket = io(serverUrl, {
