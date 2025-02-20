@@ -238,7 +238,7 @@ class WebRTCService {
       iceCandidatePoolSize: 10,
       // bundlePolicy: 'max-bundle',
       // rtcpMuxPolicy: 'require',
-      iceTransportPolicy: 'all',
+      // iceTransportPolicy: 'all',
     };
 
     const peerConnection = new RTCPeerConnection(configuration);
@@ -260,6 +260,9 @@ class WebRTCService {
         event.streams[0]
       );
       console.log('Received remote track:', event.track.kind);
+      if (event.track.kind === 'video') {
+        console.log('Adding remote video stream for:', targetUserId);
+      }
       if (event.streams && event.streams[0]) {
         console.log('Adding remote stream for user:', targetUserId);
         useCallStore.getState().addRemoteStream(targetUserId, event.streams[0]);
@@ -374,7 +377,10 @@ class WebRTCService {
         new RTCSessionDescription(this.pendingOffer)
       );
 
-      const answer = await peerConnection.createAnswer();
+      const answer = await peerConnection.createAnswer({
+        offerToReceiveAudio: true,
+        offerToReceiveVideo: true, // Ensure video is accepted
+      });
       await peerConnection.setLocalDescription(answer);
 
       this.socket?.emit('call-accepted', {
