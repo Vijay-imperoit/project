@@ -48,7 +48,7 @@ class WebRTCService {
       return;
     }
 
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    // const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     // const protocol = 'http';
     // const host = window.location.hostname;
     // const port = '4000';
@@ -277,12 +277,20 @@ class WebRTCService {
           'Candidate:',
           event.candidate
         );
-        this.socket?.emit('ice-candidate', {
-          targetUserId,
-          candidate: event.candidate,
-        });
+        if (peerConnection.remoteDescription) {
+          this.socket?.emit('ice-candidate', {
+            targetUserId,
+            candidate: event.candidate,
+          });
+        } else {
+          // Store candidate for later
+          const pendingCandidates =
+            this.pendingCandidates.get(targetUserId) || [];
+          pendingCandidates.push(event.candidate);
+          this.pendingCandidates.set(targetUserId, pendingCandidates);
+        }
 
-        this.sendCandidateToRemote(event.candidate);
+        // this.sendCandidateToRemote(event.candidate);
       }
     };
 
@@ -308,9 +316,9 @@ class WebRTCService {
     return peerConnection;
   }
 
-  private sendCandidateToRemote(candidate: RTCIceCandidate) {
-    console.log('Sending candidate to remote:', candidate);
-  }
+  // private sendCandidateToRemote(candidate: RTCIceCandidate) {
+  //   console.log('Sending candidate to remote:', candidate);
+  // }
 
   private async restartIce(
     targetUserId: string,
@@ -398,7 +406,7 @@ class WebRTCService {
     } catch (error) {
       console.error('Error accepting call:', error);
       this.removePeerConnection(this.pendingCallerId);
-      throw error;
+      // var candidate = new RTCIceCandidate(msg.candidate);
     } finally {
       this.pendingOffer = null;
       this.pendingCallerId = null;

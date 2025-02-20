@@ -4,7 +4,7 @@ const RemoteVideo = ({ stream, userId }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    if (videoRef.current) {
+    if (videoRef.current && stream) {
       videoRef.current.srcObject = stream;
     }
   }, [stream]);
