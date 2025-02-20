@@ -54,7 +54,7 @@ class WebRTCService {
     // const port = '4000';
     // const serverUrl = `${protocol}//${host}:${port}`;
     // const serverUrl = `http://localhost:4000`;
-    const serverUrl = `https://96a4-122-179-140-29.ngrok-free.app`;
+    const serverUrl = `https://84ca-2401-4900-1f3e-4491-1497-b216-2c13-cde4.ngrok-free.app`;
     console.log('serverUrl', serverUrl);
 
     this.socket = io(serverUrl, {
@@ -161,6 +161,7 @@ class WebRTCService {
 
     this.socket.on('ice-candidate', async ({ candidate, from }) => {
       console.log('Received ICE candidate from:', from);
+      console.log(`🔹 Received ICE Candidate from ${from}:`, candidate);
       const peerConnection = this.peerConnections.get(from);
       if (peerConnection) {
         try {
@@ -209,31 +210,31 @@ class WebRTCService {
         { urls: 'stun:stun2.l.google.com:19302' },
         { urls: 'stun:stun3.l.google.com:19302' },
         { urls: 'stun:stun4.l.google.com:19302' },
-        {
-          urls: 'turn:numb.viagenie.ca',
-          username: 'webrtc@live.com',
-          credential: 'muazkh',
-        },
-        {
-          urls: 'turn:numb.viagenie.ca',
-          credential: 'muazkh',
-          username: 'webrtc@live.com',
-        },
-        {
-          urls: 'turn:192.158.29.39:3478?transport=udp',
-          credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
-          username: '28224511:1379330808',
-        },
-        {
-          urls: 'turn:numb.viagenie.ca:443?transport=tcp',
-          credential: 'muazkh',
-          username: 'webrtc@live.com',
-        },
-        {
-          urls: 'turn:turn.anyfirewall.com:443?transport=tcp',
-          username: 'webrtc',
-          credential: 'webrtc',
-        },
+        // {
+        //   urls: 'turn:numb.viagenie.ca',
+        //   username: 'webrtc@live.com',
+        //   credential: 'muazkh',
+        // },
+        // {
+        //   urls: 'turn:numb.viagenie.ca',
+        //   credential: 'muazkh',
+        //   username: 'webrtc@live.com',
+        // },
+        // {
+        //   urls: 'turn:192.158.29.39:3478?transport=udp',
+        //   credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+        //   username: '28224511:1379330808',
+        // },
+        // {
+        //   urls: 'turn:numb.viagenie.ca:443?transport=tcp',
+        //   credential: 'muazkh',
+        //   username: 'webrtc@live.com',
+        // },
+        // {
+        //   urls: 'turn:turn.anyfirewall.com:443?transport=tcp',
+        //   username: 'webrtc',
+        //   credential: 'webrtc',
+        // },
       ],
       iceCandidatePoolSize: 10,
       // bundlePolicy: 'max-bundle',
@@ -265,6 +266,7 @@ class WebRTCService {
       }
       if (event.streams && event.streams[0]) {
         console.log('Adding remote stream for user:', targetUserId);
+        // document.getElementById('remoteVideo').srcObject = event.streams[0];
         useCallStore.getState().addRemoteStream(targetUserId, event.streams[0]);
       }
     };
@@ -277,6 +279,8 @@ class WebRTCService {
           'Candidate:',
           event.candidate
         );
+
+        console.log('🔹 Sending ICE Candidate:', event.candidate);
         if (peerConnection.remoteDescription) {
           this.socket?.emit('ice-candidate', {
             targetUserId,

@@ -2,10 +2,16 @@ import { useEffect, useRef } from 'react';
 
 const RemoteVideo = ({ stream, userId }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  console.log('stream,userId', stream, userId);
+
+  console.log('Hello');
 
   useEffect(() => {
     if (videoRef.current && stream) {
       videoRef.current.srcObject = stream;
+      videoRef.current.onloadedmetadata = () => {
+        videoRef?.current.play();
+      };
     }
   }, [stream]);
 
