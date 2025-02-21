@@ -86,6 +86,8 @@ const VideoCall: React.FC = () => {
     setIncomingCall(false);
   };
 
+  console.log('remoteStreams', remoteStreams);
+
   return (
     <div className="min-h-screen bg-gray-900 text-white p-4">
       <div className="max-w-6xl mx-auto">
