@@ -54,7 +54,7 @@ class WebRTCService {
     // const port = '4000';
     // const serverUrl = `${protocol}//${host}:${port}`;
     // const serverUrl = `http://localhost:4000`;
-    const serverUrl = `https://84ca-2401-4900-1f3e-4491-1497-b216-2c13-cde4.ngrok-free.app`;
+    const serverUrl = `https://7b3a-2401-4900-1f3e-4491-1497-b216-2c13-cde4.ngrok-free.app`;
     console.log('serverUrl', serverUrl);
 
     this.socket = io(serverUrl, {
@@ -205,11 +205,23 @@ class WebRTCService {
   private async setupPeerConnection(targetUserId: string) {
     const configuration = {
       iceServers: [
-        { urls: 'stun:stun.l.google.com:19302' },
-        { urls: 'stun:stun1.l.google.com:19302' },
-        { urls: 'stun:stun2.l.google.com:19302' },
-        { urls: 'stun:stun3.l.google.com:19302' },
-        { urls: 'stun:stun4.l.google.com:19302' },
+        // { urls: 'stun:stun.l.google.com:19302' },
+        // { urls: 'stun:stun1.l.google.com:19302' },
+        // { urls: 'stun:stun2.l.google.com:19302' },
+        // { urls: 'stun:stun3.l.google.com:19302' },
+        // { urls: 'stun:stun4.l.google.com:19302' },
+        {
+          urls: ['stun:eu-turn4.xirsys.com'],
+        },
+        {
+          username:
+            'ml0jh0qMKZKd9P_9C0UIBY2G0nSQMCFBUXGlk6IXDJf8G2uiCymg9WwbEJTMwVeiAAAAAF2__hNSaW5vbGVl',
+          credential: '4dd454a6-feee-11e9-b185-6adcafebbb45',
+          urls: [
+            'turn:eu-turn4.xirsys.com:80?transport=udp',
+            'turn:eu-turn4.xirsys.com:3478?transport=tcp',
+          ],
+        },
         // {
         //   urls: 'turn:numb.viagenie.ca',
         //   username: 'webrtc@live.com',
@@ -266,15 +278,6 @@ class WebRTCService {
       }
       if (event.streams && event.streams[0]) {
         console.log('Adding remote stream for user:', targetUserId);
-        const remoteVideo = document.getElementById(
-          'remoteVideo'
-        ) as HTMLVideoElement | null;
-
-        if (remoteVideo) {
-          remoteVideo.srcObject = event.streams[0];
-        } else {
-          console.error('❌ remoteVideo element not found!');
-        }
         useCallStore.getState().addRemoteStream(targetUserId, event.streams[0]);
       }
     };

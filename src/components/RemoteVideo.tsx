@@ -9,17 +9,13 @@ const RemoteVideo = ({ stream, userId }) => {
   useEffect(() => {
     if (videoRef.current && stream) {
       videoRef.current.srcObject = stream;
-      videoRef.current.onloadedmetadata = () => {
-        videoRef?.current.play();
-      };
     }
   }, [stream]);
 
   return (
     <div className="relative aspect-video">
       <video
-        // ref={videoRef}
-        id="remoteVideo"
+        ref={videoRef}
         autoPlay
         playsInline
         className="w-full h-full object-cover rounded-lg bg-gray-800"

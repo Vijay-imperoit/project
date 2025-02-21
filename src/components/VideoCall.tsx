@@ -160,11 +160,14 @@ const VideoCall: React.FC = () => {
             //     {remote.userId}
             //   </div>
             // </div>
-            <RemoteVideo
-              key={remote.userId}
-              stream={remote.stream}
-              userId={remote.userId}
-            />
+            <>
+              {console.log(remote.userId, remote.stream)}
+              <RemoteVideo
+                key={remote.userId}
+                stream={remote.stream}
+                userId={remote.userId}
+              />
+            </>
           ))}
         </div>
 
